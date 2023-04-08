@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         val notificationId = 1
         val contentTitle = "My Notification"
-        val contentText = "This is my notification"
+        val contentText = setNotificationContent()
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle(contentTitle)
@@ -71,6 +71,11 @@ class MainActivity : AppCompatActivity() {
             // Do something with the new value
             age = newVal
         }
+
+    }
+
+    private fun setNotificationContent(): String {
+        return "This is my notification $yearOfBirth"
     }
 
     private fun showDatePickerDialog() {
@@ -85,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Update the text on the button to show the selected date
                 val dateString = "$dayOfMonth/${monthOfYear + 1}/$year"
-//                datePickerButton.text = dateString
+                b.pickDate.text = dateString
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
