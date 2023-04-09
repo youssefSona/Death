@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.example.death.databinding.ActivityMainBinding
@@ -42,21 +43,26 @@ class MainActivity : AppCompatActivity() {
         notificationManager.createNotificationChannel(notificationChannel)
 
         val notificationId = 1
-        val contentTitle = "My Notification"
-        val contentText = setNotificationContent()
+        val contentTitle = "Life ends in"
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle(contentTitle)
-            .setContentText(contentText)
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(false)
 
-        // send notification
-        b.btn.setOnClickListener {
-            notificationManager.notify(notificationId, notificationBuilder.build())
-        }
         //////////////    #Notification#    //////////////
+
+
+        b.btn.setOnClickListener {
+
+            if (yearOfBirth != 0) {
+                notificationBuilder.setContentText("$yearOfBirth $monthOfBirth $dayOfBirth")
+                // send notification
+                notificationManager.notify(notificationId, notificationBuilder.build())
+            } else err("Please select a date")
+        }
+
 
         // Set up the date picker button
         b.pickDate.setOnClickListener {
@@ -74,9 +80,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setNotificationContent(): String {
-        return "This is my notification $yearOfBirth"
-    }
 
     private fun showDatePickerDialog() {
         // Set up the date picker dialog
@@ -102,5 +105,9 @@ class MainActivity : AppCompatActivity() {
 
         // Show the dialog
         datePickerDialog.show()
+    }
+
+    private fun err(text:String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 }
