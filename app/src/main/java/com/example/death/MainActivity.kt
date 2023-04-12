@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                     val years = months / 12
 
                     val countdownString = String.format(
-                        "%02d Y \n%02d M\n%02d D\n%02d H\n%02d Min\n%02d Sec",
+                        "%02d Y %02d M %02d D %02d H %02d Min %02d Sec",
                         years,
                         months % 12,
                         days % 30,
