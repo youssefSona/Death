@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Life ends in")
             .setSmallIcon(R.drawable.ic_launcher_background)
+            .setOngoing(true) // Make the notification non-removable
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) // show on lock screen
             .setAutoCancel(false)
