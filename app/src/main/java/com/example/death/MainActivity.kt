@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private var yearOfBirth: Int = 0
     private var monthOfBirth: Int = 0
     private var dayOfBirth: Int = 0
-    private var age: Int = 0
+    private var age: Int = 18
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
