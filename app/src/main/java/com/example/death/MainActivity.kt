@@ -51,49 +51,9 @@ class MainActivity : AppCompatActivity() {
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setContentTitle("Life ends in")
             .setSmallIcon(R.drawable.ic_launcher_background)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC) // show on lock screen
             .setAutoCancel(false)
-
-        val handler = Handler()
-        val updateRunnable = object : Runnable {
-            override fun run() {
-                val millisUntilFinished = countdownInMillis - System.currentTimeMillis()
-                if (millisUntilFinished <= 0) {
-                    // Countdown finished, cancel the notification
-                    notificationManager.cancel(1)
-                } else {
-                    // Update the notification text with the remaining time
-                    val seconds = (millisUntilFinished / 1000).toInt()
-                    val minutes = seconds / 60
-                    val hours = minutes / 60
-                    val days = hours / 24
-                    val months = days / 30
-                    val years = months / 12
-
-                    val countdownString = String.format(
-                        "Years: %02d\nMonths: %02d\nDays: %02d\nHours: %02d\nMinutes: %02d\nSeconds: %02d",
-                        years,
-                        months % 12,
-                        days % 30,
-                        hours % 24,
-                        minutes % 60,
-                        seconds % 60
-                    )
-
-                    builder.setContentText(countdownString)
-
-                    // Update the notification with the new text
-                    notificationManager.notify(1, builder.build())
-
-                    // Schedule the next update after 1 second
-                    handler.postDelayed(this, 1000)
-                }
-            }
-        }
-
-        // Start the countdown timer and update the notification text periodically
-        handler.post(updateRunnable)
 
         //////////////    #Notification#    //////////////
 
@@ -114,15 +74,12 @@ class MainActivity : AppCompatActivity() {
         // Start notification
         b.btn.setOnClickListener {
 
-            ////// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            ////// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            ////// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             // Calculating Time Remaining
             val countdownDate = Calendar.getInstance()
             countdownDate.set(2038, Calendar.NOVEMBER, 14, 0, 0, 0)
             val countdownInMillis = countdownDate.timeInMillis - Calendar.getInstance().timeInMillis
 
-            val countdownTimer = object : CountDownTimer(countdownInMillis, 1000) {
+            val countDownTimer = object : CountDownTimer(countdownInMillis, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val seconds = (millisUntilFinished / 1000).toInt()
                     val minutes = seconds / 60
@@ -132,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                     val years = months / 12
 
                     val countdownString = String.format(
-                        "Time Left: %02d Y %02d M %02d D %02d H %02d Min %02d Sec",
+                        "%02d Y \n%02d M\n%02d D\n%02d H\n%02d Min\n%02d Sec",
                         years,
                         months % 12,
                         days % 30,
@@ -141,30 +98,25 @@ class MainActivity : AppCompatActivity() {
                         seconds % 60
                     )
 
-                    // Update the UI with the countdown string
-                    timeRemaining = countdownString
+                    notificationBuilder.setContentText(countdownString)
+
+                    // Update the notification with the new text
+                    notificationManager.notify(notificationId, notificationBuilder.build())
                 }
 
                 override fun onFinish() {
-                    // Handle the countdown finish
-                    timeRemaining = "You are dead!"
+                    // Countdown finished, cancel the notification
+                    notificationManager.cancel(notificationId)
                 }
             }
 
-            // Start the countdown timer
-            countdownTimer.start()
-
-            ////// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            ////// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            ////// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// Start the countdown timer and update the notification text periodically
+            countDownTimer.start()
 
             // Make sure that the date is selected before launching the notification
 //            if (yearOfBirth != 0) {
-                // Setting notification's text
-//                notificationBuilder.setContentText("$yearOfBirth ${monthOfBirth + 1} $dayOfBirth")
-                notificationBuilder.setContentText(timeRemaining)
                 // send notification
-                notificationManager.notify(notificationId, notificationBuilder.build())
+//                notificationManager.notify(notificationId, notificationBuilder.build())
 //            } else msg("Please select a date") // Select date first y7bibi
         }
 
